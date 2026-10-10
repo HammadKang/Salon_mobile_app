@@ -1,0 +1,36 @@
+/** Free Unsplash photos. Replace ids with the salon's own photos (or local require()s). */
+export const photo = (id: string, w = 900) =>
+  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
+
+export const IMG = {
+  interior: '1600948836101-f9ffda59d250',
+  reception: '1746723378067-83a345ff3160',
+  salonScene: '1695527081848-1e46c06e6458',
+  colorApply: '1707979577466-2d6109c68a45',
+  cut: '1700760934268-8aa0ef52ce0a',
+  curls: '1629397685944-7073f5589754',
+  updoB: '1672788709547-6d7f239972c3',
+  vivid: '1554519515-242161756769',
+  ash: '1605980766335-d3a41c7332a1',
+  waves: '1638064432648-bc2f9a91b06b',
+  bridal1: '1684868268327-7e5590bcfbd6',
+  bridal2: '1610173827043-9db50e0d8ef9',
+  bridal3: '1631549424057-403e75d68e2f',
+  bridal4: '1600685890506-593fdf55949b',
+  facial1: '1570172619644-dfd03ed5d881',
+  facial2: '1616394584738-fc6e612e71b9',
+  nails1: '1632345031435-8727f6897d53',
+  nails2: '1610992015762-45dca7fa3a85',
+  nails3: '1607779097040-26e80aa78e66',
+  nails4: '1754799670312-8e7da8e40ad7',
+  wax: '1696192410531-dc179772a0e8',
+  spa1: '1706795033849-7ca391f007c5',
+  spa2: '1531299244174-d247dd4e5a66',
+  makeupArtist: '1636023730877-233b9237d4ec',
+  portrait1: '1580489944761-15a19d654956',
+  portrait2: '1544005313-94ddf0286df2',
+  portrait3: '1614204424926-196a80bf0be8',
+  portrait4: '1524504388940-b1c1722653e1',
+  portrait5: '1502823403499-6ccfcf4fb453',
+  facial3: '1761718210089-ba3bb5ccb54f',
+};
