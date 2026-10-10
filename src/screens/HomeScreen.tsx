@@ -8,7 +8,7 @@ import { Button } from '../components/Button';
 import { LogoMark } from '../brand/Logo';
 import { AnimatedNumber, PressableScale, ScrollReveal, Twinkles } from '../components/Motion';
 import { Reveal } from '../components/Reveal';
-import { Hairline, Photo, SectionHeader } from '../components/ui';
+import { Hairline, Photo, Scrim, SectionHeader } from '../components/ui';
 import { useApp } from '../context/AppContext';
 import { DAY_NAMES, salon } from '../config/salon';
 import { TESTIMONIALS, OFFERS } from '../data/content';
@@ -57,10 +57,8 @@ export function HomeScreen() {
           <Animated.View style={[StyleSheet.absoluteFill, { transform: [{ translateY: heroTranslate }, { scale: heroScale }] }]}>
             <Photo uri={photo(IMG.curls, 1400)} style={StyleSheet.absoluteFill as never} label="A stylist shaping soft waves in a bright salon" />
           </Animated.View>
-          <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(27,22,19,0.34)' }]} />
-          {[30, 42, 54, 66, 78].map((top, i) => (
-            <View key={top} style={[StyleSheet.absoluteFill, { top: `${top}%`, backgroundColor: `rgba(27,22,19,${0.1 + i * 0.03})` }]} />
-          ))}
+          <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(27,22,19,0.28)' }]} />
+          <Scrim from={0.28} strength={0.92} />
           <Twinkles count={8} area={{ width: W, height: HERO_H * 0.62 }} />
           <View style={[styles.heroTop, { paddingTop: insets.top + 14 }]}>
             <Reveal delay={100} distance={10} style={styles.brandRow}>

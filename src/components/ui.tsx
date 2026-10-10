@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, ImageStyle, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { colors, screenPad, type } from '../theme';
 
 /** Remote image with a soft placeholder colour while it loads. */
@@ -34,3 +35,21 @@ const styles = StyleSheet.create({
   chipOn: { backgroundColor: colors.ink, borderColor: colors.ink },
   chipText: { fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', color: colors.ink, fontWeight: '600' },
 });
+
+/** Smooth vertical gradient scrim (transparent at `from`, dark at the bottom). Sits over photos so text stays readable. */
+export function Scrim({ from = 0.45, strength = 0.82, style }: { from?: number; strength?: number; style?: StyleProp<ViewStyle> }) {
+  return (
+    <View pointerEvents="none" style={[StyleSheet.absoluteFill, style]}>
+      <Svg width="100%" height="100%">
+        <Defs>
+          <LinearGradient id="scrim" x1="0" y1="0" x2="0" y2="1">
+            <Stop offset="0" stopColor="#1b1613" stopOpacity="0" />
+            <Stop offset={String(from)} stopColor="#1b1613" stopOpacity="0" />
+            <Stop offset="1" stopColor="#1b1613" stopOpacity={String(strength)} />
+          </LinearGradient>
+        </Defs>
+        <Rect x="0" y="0" width="100%" height="100%" fill="url(#scrim)" />
+      </Svg>
+    </View>
+  );
+}
