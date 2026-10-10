@@ -5,6 +5,7 @@ import { Animated, Easing, KeyboardAvoidingView, Platform, Pressable, ScrollView
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from '../components/Button';
 import { Calendar } from '../components/Calendar';
+import { PressableScale, SuccessCheck } from '../components/Motion';
 import { Chip, Photo } from '../components/ui';
 import { useApp } from '../context/AppContext';
 import { salon } from '../config/salon';
@@ -195,9 +196,9 @@ function StepDateTime({ serviceId, stylistId, date, time, booked, onChange }: { 
                 <Text style={[type.eyebrow, { color: colors.stone }]}>{label}</Text>
                 <View style={styles.times}>
                   {times.map(t => (
-                    <Pressable key={t} onPress={() => onChange(date, t)} accessibilityRole="button" accessibilityState={{ selected: time === t }} style={[styles.time, time === t && styles.timeOn]}>
-                      <Text style={[styles.timeText, time === t && { color: colors.ivory }]}>{to12h(t)}</Text>
-                    </Pressable>
+                    <PressableScale key={t} scaleTo={0.94} onPress={() => onChange(date, t)} accessibilityRole="button" accessibilityState={{ selected: time === t }} style={styles.timeWrap}>
+                      <View style={[styles.time, time === t && styles.timeOn]}><Text style={[styles.timeText, time === t && { color: colors.ivory }]}>{to12h(t)}</Text></View>
+                    </PressableScale>
                   ))}
                 </View>
               </View>
@@ -290,12 +291,10 @@ function StepReview({ service, stylistId, date, time, details, discount, promo, 
 function Confirmation({ booking, onDone }: { booking: Booking; onDone: () => void }) {
   const service = getService(booking.serviceId);
   const stylist = getStylist(booking.stylistId);
-  const pop = useRef(new Animated.Value(0)).current;
-  useEffect(() => { Animated.spring(pop, { toValue: 1, useNativeDriver: true, friction: 5 }).start(); }, [pop]);
   const message = bookingMessage(booking);
   return (
     <View style={{ alignItems: 'center', paddingTop: 10 }}>
-      <Animated.View style={[styles.tick, { transform: [{ scale: pop }], opacity: pop }]}><Check size={36} color={colors.gold} strokeWidth={2.4} /></Animated.View>
+      <SuccessCheck size={92} />
       <Text style={[type.eyebrow, { marginTop: 20 }]}>Booking received</Text>
       <Text style={[type.display(36), { marginTop: 6, textAlign: 'center' }]}>Thank you, {booking.name.split(' ')[0]}.</Text>
       <Text style={[type.body, { textAlign: 'center', marginTop: 10 }]}>Your appointment is saved. <Text style={{ color: colors.ink, fontWeight: '700' }}>One last step:</Text> send it to the salon on WhatsApp so the team can confirm your slot.</Text>
@@ -329,7 +328,8 @@ const styles = StyleSheet.create({
   pickOn: { borderColor: colors.ink, backgroundColor: 'rgba(239,227,211,0.6)' },
   hint: { padding: 18, textAlign: 'center', color: colors.stone, borderWidth: 1, borderStyle: 'dashed', borderColor: colors.sand },
   times: { flexDirection: 'row', flexWrap: 'wrap', columnGap: 8, rowGap: 8, marginTop: 8 },
-  time: { width: '31.5%', minHeight: 46, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: colors.sand },
+  timeWrap: { width: '31.5%' },
+  time: { width: '100%', minHeight: 46, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: colors.sand },
   timeOn: { backgroundColor: colors.ink, borderColor: colors.ink },
   timeText: { fontSize: 14, color: colors.ink },
   fieldLabel: { fontSize: 11, letterSpacing: 2.2, textTransform: 'uppercase', color: colors.mocha, fontWeight: '600' },

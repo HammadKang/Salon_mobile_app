@@ -2,9 +2,11 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { MapPin, MessageCircle, Phone, Sparkles } from 'lucide-react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Dimensions, FlatList, Modal, Pressable, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Animated, Dimensions, FlatList, Modal, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from '../components/Button';
+import { LogoMark } from '../brand/Logo';
+import { AnimatedNumber, PressableScale, ScrollReveal, Twinkles } from '../components/Motion';
 import { Reveal } from '../components/Reveal';
 import { Hairline, Photo, SectionHeader } from '../components/ui';
 import { useApp } from '../context/AppContext';
@@ -59,9 +61,15 @@ export function HomeScreen() {
           {[30, 42, 54, 66, 78].map((top, i) => (
             <View key={top} style={[StyleSheet.absoluteFill, { top: `${top}%`, backgroundColor: `rgba(27,22,19,${0.1 + i * 0.03})` }]} />
           ))}
+          <Twinkles count={8} area={{ width: W, height: HERO_H * 0.62 }} />
           <View style={[styles.heroTop, { paddingTop: insets.top + 14 }]}>
-            <Text style={styles.logo}>{salon.name.toUpperCase()}</Text>
-            <Text style={styles.logoSub}>{salon.tagline.toUpperCase()}</Text>
+            <Reveal delay={100} distance={10} style={styles.brandRow}>
+              <LogoMark size={46} />
+              <View>
+                <Text style={styles.logo}>{salon.name.toUpperCase()}</Text>
+                <Text style={styles.logoSub}>{salon.tagline.toUpperCase()}</Text>
+              </View>
+            </Reveal>
           </View>
           <View style={styles.heroBottom}>
             <Reveal delay={200}><Text style={[type.eyebrow, { color: colors.goldLight }]}>Hair · Colour · Bridal · Skin · Nails</Text></Reveal>
@@ -77,7 +85,7 @@ export function HomeScreen() {
         </View>
 
         {/* Welcome */}
-        <View style={{ paddingVertical: 56 }}>
+        <ScrollReveal scrollY={scrollY} style={{ paddingVertical: 56 }}>
           <Reveal>
             <SectionHeader eyebrow="Welcome" title="Considered beauty," italic="tailored to you." />
             <Text style={[type.body, { paddingHorizontal: screenPad, marginTop: 14 }]}>{salon.description}</Text>
@@ -89,15 +97,15 @@ export function HomeScreen() {
               { n: STYLISTS.length, l: 'Specialists' },
             ].map(s => (
               <View key={s.l} style={styles.stat}>
-                <Text style={type.display(46)}>{s.n}</Text>
+                <AnimatedNumber value={s.n} style={type.display(46)} />
                 <Text style={styles.statLabel}>{s.l}</Text>
               </View>
             ))}
           </View>
-        </View>
+        </ScrollReveal>
 
         {/* Signature */}
-        <View style={{ backgroundColor: 'rgba(239,227,211,0.5)', paddingVertical: 56 }}>
+        <ScrollReveal scrollY={scrollY} style={{ backgroundColor: 'rgba(239,227,211,0.5)', paddingVertical: 56 }}>
           <SectionHeader eyebrow="Signature treatments" title="The ones" italic="clients return for." />
           <FlatList
             horizontal
@@ -108,18 +116,18 @@ export function HomeScreen() {
             decelerationRate="fast"
             contentContainerStyle={{ paddingHorizontal: screenPad, paddingTop: 26, gap: 14 }}
             renderItem={({ item }) => (
-              <Pressable onPress={() => book({ serviceId: item.id })} accessibilityRole="button" accessibilityLabel={`Book ${item.name}`} style={{ width: W * 0.72 }}>
+              <PressableScale onPress={() => book({ serviceId: item.id })} accessibilityRole="button" accessibilityLabel={`Book ${item.name}`} style={{ width: W * 0.72 }}>
                 <Photo uri={item.image} style={{ width: '100%', height: W * 0.72 * 1.28 }} />
                 <Text style={[type.display(24), { marginTop: 12 }]}>{item.name}</Text>
                 <Text style={styles.cardMeta}>{formatDuration(item.durationMin)} · From {formatPrice(item.price)}</Text>
-              </Pressable>
+              </PressableScale>
             )}
           />
-        </View>
+        </ScrollReveal>
 
         {/* Offer */}
         {salon.offer.enabled ? (
-          <View style={{ padding: screenPad, paddingTop: 40 }}>
+          <ScrollReveal scrollY={scrollY} style={{ padding: screenPad, paddingTop: 40 }}>
             <View style={styles.offer}>
               <Photo uri={OFFERS[0].image} style={StyleSheet.absoluteFill as never} />
               <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(27,22,19,0.66)' }]} />
@@ -133,11 +141,11 @@ export function HomeScreen() {
                   : <Button label="Claim my offer" variant="light" onPress={claimOffer} />}
               </View>
             </View>
-          </View>
+          </ScrollReveal>
         ) : null}
 
         {/* Team */}
-        <View style={{ paddingVertical: 40 }}>
+        <ScrollReveal scrollY={scrollY} style={{ paddingVertical: 40 }}>
           <SectionHeader eyebrow="Meet the team" title="The hands behind" italic="the work." />
           <FlatList
             horizontal
@@ -146,19 +154,19 @@ export function HomeScreen() {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ paddingHorizontal: screenPad, paddingTop: 24, gap: 14 }}
             renderItem={({ item }) => (
-              <Pressable onPress={() => book({ stylistId: item.id })} accessibilityRole="button" accessibilityLabel={`Book with ${item.name}`} style={{ width: 150 }}>
+              <PressableScale onPress={() => book({ stylistId: item.id })} accessibilityRole="button" accessibilityLabel={`Book with ${item.name}`} style={{ width: 150 }}>
                 <Photo uri={item.image} style={{ width: 150, height: 190 }} />
                 <Text style={[type.display(19), { marginTop: 10 }]}>{item.name}</Text>
                 <Text style={[type.eyebrow, { fontSize: 9, marginTop: 3 }]}>{item.role}</Text>
-              </Pressable>
+              </PressableScale>
             )}
           />
-        </View>
+        </ScrollReveal>
 
-        <Testimonials />
+        <ScrollReveal scrollY={scrollY}><Testimonials /></ScrollReveal>
 
         {/* Visit */}
-        <View style={{ padding: screenPad, paddingVertical: 56 }}>
+        <ScrollReveal scrollY={scrollY} style={{ padding: screenPad, paddingVertical: 56 }}>
           <Text style={type.eyebrow}>Visit us</Text>
           <Text style={[type.display(34), { marginTop: 10 }]}>Come and <Text style={{ fontStyle: 'italic', color: colors.gold }}>unwind.</Text></Text>
           <Text style={[type.body, { marginTop: 14 }]}>{fullAddress()}</Text>
@@ -170,7 +178,7 @@ export function HomeScreen() {
             <Button label="WhatsApp" variant="outline" icon={<MessageCircle size={16} color={colors.ink} />} onPress={() => openWhatsApp()} />
             <Button label="Directions" variant="outline" icon={<MapPin size={16} color={colors.ink} />} onPress={openDirections} />
           </View>
-        </View>
+        </ScrollReveal>
         <Hairline />
         <Text style={styles.foot}>© {new Date().getFullYear()} {salon.name} {salon.tagline}</Text>
       </Animated.ScrollView>
@@ -258,7 +266,8 @@ function WelcomeOffer() {
 
 const styles = StyleSheet.create({
   heroTop: { position: 'absolute', top: 0, left: screenPad, right: screenPad },
-  logo: { color: colors.ivory, fontSize: 26, letterSpacing: 5, fontFamily: type.display(1).fontFamily },
+  brandRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  logo: { color: colors.ivory, fontSize: 24, letterSpacing: 5, fontFamily: type.display(1).fontFamily },
   logoSub: { color: 'rgba(250,246,240,0.75)', fontSize: 9, letterSpacing: 5.5, marginTop: 4 },
   heroBottom: { position: 'absolute', left: screenPad, right: screenPad, bottom: 34 },
   headline: { fontFamily: type.display(1).fontFamily, fontSize: 46, lineHeight: 50, color: colors.ivory, marginTop: 12, fontWeight: '300' },

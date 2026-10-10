@@ -1,5 +1,7 @@
 # Aurelle: Salon Mobile App
 
+<p align="center"><img src="assets/icon-1024.png" width="140" alt="Aurelle logo" /></p>
+
 A premium salon app for iOS and Android with online appointment booking. Built with **React Native 0.87** (the plain React Native CLI, no Expo) and TypeScript.
 
 "Aurelle" is a sample brand. Branding, contact details, hours, services, team and offers are all driven by a few configuration files, so the app can be re-branded for any salon.
@@ -8,6 +10,8 @@ This is the mobile companion to the [Aurelle salon website](https://github.com/H
 
 ## Features
 
+- **Brand and intro:** a custom logo (a mirror-shaped arch holding a monogram "A" whose crossbar is a strand of hair) that **draws itself** in a full-screen animated intro, with a glow, pulsing rings, drifting gold dust, a letter-by-letter wordmark and a soft zoom-out. Tap to skip. It respects the system "Reduce Motion" setting.
+- **Motion throughout:** scroll-triggered section reveals, counting statistics, a parallax hero with twinkling sparkles, press-scale feedback on cards and buttons, springy tab icons, and a check mark that draws itself with a sparkle burst on booking confirmation.
 - **Home:** cinematic hero with parallax, signature treatments carousel, first-visit offer, team preview, testimonials, and opening hours with one-tap call, WhatsApp and directions.
 - **Services:** all treatments with category filters, duration, "from" prices and promo labels. Tapping a service starts booking with it preselected.
 - **Booking in five steps:** service, stylist (or any available), date and time, details, review. Availability is calculated live from the salon's opening hours, service duration and stylist days off.
@@ -26,7 +30,7 @@ This is the mobile companion to the [Aurelle salon website](https://github.com/H
 | Navigation | React Navigation 7 (bottom tabs and native stack) |
 | Storage | AsyncStorage |
 | Icons | lucide-react-native (react-native-svg) |
-| Animation | React Native `Animated` (native driver) |
+| Animation | React Native `Animated` (native driver where possible), react-native-svg stroke drawing |
 | Tests | Jest |
 
 ## Requirements
@@ -69,7 +73,8 @@ src/
   context/AppContext.tsx     Saved bookings and offer state
   navigation/                Tabs, stack and the useBook() helper
   screens/                   Home, Services, Gallery, Team, Visit, Booking
-  components/                Button, Calendar, Reveal, shared UI
+  brand/                     Logo geometry, logo components, animated splash
+  components/                Button, Calendar, Reveal, Motion helpers, shared UI
 __tests__/                   Booking engine tests
 ```
 
@@ -84,7 +89,9 @@ __tests__/                   Booking engine tests
 | Gallery, testimonials, FAQs | `src/data/content.ts` |
 | Photos | `src/lib/images.ts` (Unsplash ids) or local images |
 | Colours and typography | `src/theme.ts` |
-| App icon | `ios/.../AppIcon.appiconset` and `android/.../mipmap-*` |
+| Logo | `src/brand/geometry.ts` (shapes), `src/brand/Logo.tsx`, `assets/logo.svg` |
+| Intro animation | `src/brand/Splash.tsx` |
+| App icon | `ios/.../AppIcon.appiconset` and `android/.../mipmap-*` (artwork in `assets/`) |
 
 Opening hours, service durations and stylist days off feed the booking engine directly, so changing them changes which times customers can choose.
 
@@ -117,5 +124,5 @@ The following are placeholders and must be replaced with real information:
 
 - Type-check, lint and 10 unit tests pass.
 - JavaScript bundles successfully for both iOS and Android.
-- Built and run on the iOS Simulator (iPhone 17 Pro). Verified by hand: home, services, the full booking flow including validation and confirmation, bookings persisting after an app restart, the gallery viewer, and the welcome offer.
+- Built and run on the iOS Simulator (iPhone 17 Pro). The intro animation was checked frame by frame, including that there is no white flash before it. Verified by hand: home, services, the full booking flow including validation and confirmation, bookings persisting after an app restart, the gallery viewer, and the welcome offer.
 - **Not yet verified:** a full Android build and run, small phones and tablets, and VoiceOver/TalkBack behaviour.

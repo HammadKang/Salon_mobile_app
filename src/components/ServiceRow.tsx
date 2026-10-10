@@ -1,6 +1,7 @@
 import { Clock } from 'lucide-react-native';
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { PressableScale } from './Motion';
 import type { Service } from '../data/services';
 import { formatDuration, formatPrice } from '../lib/format';
 import { colors, type } from '../theme';
@@ -8,7 +9,7 @@ import { Photo } from './ui';
 
 export function ServiceRow({ s, onBook }: { s: Service; onBook: () => void }) {
   return (
-    <Pressable onPress={onBook} accessibilityRole="button" accessibilityLabel={`Book ${s.name}, from ${formatPrice(s.price)}, ${formatDuration(s.durationMin)}`} style={styles.row}>
+    <PressableScale scaleTo={0.98} onPress={onBook} accessibilityRole="button" accessibilityLabel={`Book ${s.name}, from ${formatPrice(s.price)}, ${formatDuration(s.durationMin)}`} style={styles.row}>
       <View>
         <Photo uri={s.image} style={styles.img} />
         {s.promo ? <View style={styles.promo}><Text style={styles.promoText}>{s.promo}</Text></View> : null}
@@ -23,7 +24,7 @@ export function ServiceRow({ s, onBook }: { s: Service; onBook: () => void }) {
           <Text style={styles.book}>Book  →</Text>
         </View>
       </View>
-    </Pressable>
+    </PressableScale>
   );
 }
 

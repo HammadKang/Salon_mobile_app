@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     reactNativeFactory = factory
 
     window = UIWindow(frame: UIScreen.main.bounds)
+    window?.backgroundColor = ReactNativeDelegate.brandInk
 
     factory.startReactNative(
       withModuleName: "Salon_mobile_app",
@@ -34,6 +35,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
+  /// Brand ink, so there is no white flash between the launch screen and the animated intro.
+  static let brandInk = UIColor(red: 27.0 / 255.0, green: 22.0 / 255.0, blue: 19.0 / 255.0, alpha: 1)
+
+  override func customize(_ rootView: RCTRootView) {
+    rootView.backgroundColor = ReactNativeDelegate.brandInk
+  }
+
   override func sourceURL(for bridge: RCTBridge) -> URL? {
     self.bundleURL()
   }
